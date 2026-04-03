@@ -40,7 +40,7 @@ pub fn main(init: std.process.Init) !void {
     // the value, blocking if it isn't ready yet?
     const answer = future.???(io);
 
-    std.debug.print("The answer is: {}\n", .{answer});
+    std.debug.print("the answer is: {}\n", .{answer});
 }
 
 fn computeAnswer(a: u32, b: u32) u32 {

@@ -29,7 +29,7 @@ pub fn main(init: std.process.Init) !void {
     const io = init.io;
 
     // Launch both tasks asynchronously.
-    var future_a = io.async(slowAdd, .{ 10, 20 });
+    var future_a = io.async(slowAdd, .{ 1, 2 });
     var future_b = ???(slowMul, .{ 6, 7 });
 
     // Await both results.

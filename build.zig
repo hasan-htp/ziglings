@@ -1412,6 +1412,14 @@ const exercises = [_]Exercise{
         .hint = "Parse the two numbers and add them together",
     },
     .{
+        .main_file = "121_quiz10.zig",
+        .output =
+        \\--- Alien Cargo Manifest ---
+        \\Total alien cargo: 1389 items
+        , // pay attention to the comma
+        .hint = "Initialize the GPA and Arena, keep 'i' in bounds, and use dupe()!",
+    },
+    .{
         .main_file = "999_the_end.zig",
         .output =
         \\

@@ -1,6 +1,6 @@
---- exercises/093_async9.zig	2026-04-13 17:55:35.567204530 +0200
-+++ answers/093_async9.zig	2026-04-13 18:05:05.636355044 +0200
-@@ -43,7 +43,7 @@
+--- exercises/093_async9.zig	2026-04-13 16:16:53.213085892 -0700
++++ answers/093_async9.zig	2026-04-13 16:16:31.011254829 -0700
+@@ -43,13 +43,13 @@
      // Launch with a guaranteed separate unit of concurrency.
      // Which Io method guarantees this?
      // (Hint: unlike io.async, this one can fail!)
@@ -8,4 +8,11 @@
 +    var future = try io.concurrent(compute, .{io});
      defer _ = future.cancel(io);
  
+     print("Main begins waiting...\n", .{});
+ 
+     // We wait some time for compute() to finish, but is this enough?
+-    io.sleep(std.Io.Duration.fromMilliseconds(100), .awake) catch {};
++    io.sleep(std.Io.Duration.fromMilliseconds(500), .awake) catch {};
+ 
      // Note: All breaks in this exercise (using sleep)
+     // are necessary for a deterministic result.

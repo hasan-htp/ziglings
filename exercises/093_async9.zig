@@ -46,14 +46,15 @@ pub fn main(init: std.process.Init) !void {
     var future = try io.???(compute, .{io});
     defer _ = future.cancel(io);
 
-    // Note: All breaks in this exercise (using sleep)
-    // are only necessary for a deterministic result.
+    print("Main begins waiting...\n", .{});
+
+    // We wait some time for compute() to finish, but is this enough?
     io.sleep(std.Io.Duration.fromMilliseconds(100), .awake) catch {};
 
-    print("Main continues...\n", .{});
-
-    // Wait 1 second for the output order.
-    io.sleep(std.Io.Duration.fromMilliseconds(200), .awake) catch {};
+    // Note: All breaks in this exercise (using sleep)
+    // are necessary for a deterministic result.
+    // For a bonus exercise: if you don't like fiddling with timing, could you
+    // use the queue idea from exercise 92 to eliminate the need?
 
     print("Main done waiting.\n", .{});
 
@@ -62,8 +63,10 @@ pub fn main(init: std.process.Init) !void {
 }
 
 fn compute(io: std.Io) u32 {
-    print("Computing concurrently!\n", .{});
     // Simulate some work.
     io.sleep(std.Io.Duration.fromMilliseconds(400), .awake) catch return 0;
+
+    print("Computing concurrently!\n", .{});
+
     return 123;
 }

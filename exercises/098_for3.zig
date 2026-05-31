@@ -54,7 +54,7 @@ const std = @import("std");
 
 pub fn main() void {
 
-    // I want to print every number between 1 and 20 that is NOT
+    // I want to print every number between 0 and 20 that is NOT
     // divisible by 3 or 5.
     for (???) |n| {
 

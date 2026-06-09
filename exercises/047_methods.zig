@@ -82,16 +82,17 @@ pub fn main() void {
 
     // We'll keep checking to see if we've killed all the aliens yet.
     while (aliens_alive > 0) {
-        aliens_alive = 0;
 
         // Loop through every alien by reference (* makes a pointer capture value)
         for (&aliens) |*alien| {
 
-            // *** Zap the alien with the heat ray here! ***
-            ???.zap(???);
+            if (alien.health > 0) {
+                // *** Zap living aliens with the heat ray here! ***
+                ???.zap(???);
 
-            // If the alien's health is still above 0, it's still alive.
-            if (alien.health > 0) aliens_alive += 1;
+                // If the alien's health is 0 or below, it's not alive.
+                if (alien.health <= 0) aliens_alive -= 1;
+            }
         }
 
         std.debug.print("{} aliens. ", .{aliens_alive});

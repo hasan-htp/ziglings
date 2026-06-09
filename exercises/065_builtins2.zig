@@ -58,7 +58,7 @@ pub fn main() void {
     // Oops! We cannot leave the 'me' and 'myself' fields
     // undefined. Please set them here:
     narcissus.me = &narcissus;
-    narcissus.??? = ???;
+    narcissus.myself = &narcissus;
 
     // This determines a "peer type" from three separate
     // references (they just happen to all be the same object).
@@ -70,7 +70,7 @@ pub fn main() void {
     //
     // The fix for this is very subtle, but it makes a big
     // difference!
-    const Type2 = narcissus.fetchTheMostBeautifulType();
+    const Type2 = Narcissus.fetchTheMostBeautifulType();
 
     // Now we print a pithy statement about Narcissus.
     print("A {s} loves all {s}es. ", .{
@@ -96,24 +96,22 @@ pub fn main() void {
     // `field_names` is a slice of strings and it holds the names of the struct's fields
     // `field_types` is a slice of strings and it holds the types of the struct's fields,
     //               it is guaranteed to be the same length as `field_names`
-    const field_names = @typeInfo(Narcissus).@"struct".field_names;
-    const field_types = @typeInfo(Narcissus).@"struct".field_types;
+    const fields = @typeInfo(Narcissus).@"struct".fields;
 
     // Please complete these 'if' statements so that the field
     // name will not be printed if the field is of type 'void'
     // (which is a zero-bit type that takes up no space at all!):
-    if (field_???[???] != void) {
-        print(" {s}", .{field_???[???]});
+    if (fields[0].type != void) {
+        print(" {s}", .{fields[0].name});
     }
 
-    if (field_???[???] != void) {
-        print(" {s}", .{field_???[???]});
+    if (fields[1].type != void) {
+        print(" {s}", .{fields[1].name});
     }
 
-    if (field_???[???] != void) {
-        print(" {s}", .{field_???[???]});
+    if (fields[2].type != void) {
+        print(" {s}", .{fields[2].name});
     }
-
     // Yuck, look at all that repeated code above! I don't know
     // about you, but it makes me itchy.
     //

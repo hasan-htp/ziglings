@@ -60,3 +60,7 @@ fn consumer(io: std.Io, queue: *std.Io.Queue(u32)) void {
     }
     print("Sum of 1..10 = {}\n", .{sum});
 }
+// Remember anonymous structs?
+// std.Io.Queue(T) is a generic function returning an anonymous
+// struct type pinned to type T, just like our Circle function from
+// before!

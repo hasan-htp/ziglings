@@ -19,8 +19,22 @@
 // the various types of process execution:
 //
 //
-// Synchronous  Asynchronous
-// Processing   Processing        Multithreading
+// ----------------------------------------------------
+// Processing
+// ------------+---------------------------------------
+// Synchronous | Asynchronous & concurrent
+// ------------+-------------+-------------------------
+//             |             |
+//             | Single-     | Multi-
+//             | -threaded   | -threaded
+//             |             |
+//             | (with non-  | (with
+//             | -blocking   | blocking
+//             | IO)         | IO)
+//             |             |
+//             | Task        | Parallelism
+//             | switching   |
+//             |             |
 // ┌──────────┐ ┌──────────┐  ┌──────────┐ ┌──────────┐
 // │ Thread 1 │ │ Thread 1 │  │ Thread 1 │ │ Thread 2 │
 // ├──────────┤ ├──────────┤  ├──────────┤ ├──────────┤    Overall Time
@@ -31,23 +45,23 @@
 //    │ s │        │ s │         │ s │        │ s │      │       │       │
 //    │ k │        │ k │         │ k │        │ k │      │       │       │
 //    │   │        │   │         │   │        │   │      │       │       │
-//    │ 1 │        │ 1 │         │ 1 │        │ 3 │      │       │       │
+//    │ 1 │        │ 1 │         │ 1 │        │ 2 │      │       │       │
 //    └─┬─┘        └─┬─┘         └─┬─┘        └─┬─┘      │       │       │
 //      │            │             │            │      5 Sec     │       │
-// ┌────┴───┐      ┌─┴─┐         ┌─┴─┐        ┌─┴─┐      │       │       │
-// │Blocking│      │ T │         │ T │        │ T │      │       │       │
-// └────┬───┘      │ a │         │ a │        │ a │      │       │       │
-//      │          │ s │         │ s │        │ s │      │     8 Sec     │
-//    ┌─┴─┐        │ k │         │ k │        │ k │      │       │       │
-//    │ T │        │   │         │   │        │   │      │       │       │
-//    │ a │        │ 2 │         │ 2 │        │ 4 │      │       │       │
-//    │ s │        └─┬─┘         ├───┤        ├───┤      │       │       │
-//    │ k │          │           │┼┼┼│        │┼┼┼│      ▼       │    10 Sec
-//    │   │        ┌─┴─┐         └───┴────────┴───┴─────────     │       │
-//    │ 1 │        │ T │                                         │       │
-//    └─┬─┘        │ a │                                         │       │
-//      │          │ s │                                         │       │
-//    ┌─┴─┐        │ k │                                         │       │
+// ┌────┴───┐      ┌─┴─┐      ┌────┴───┐        │        │       │       │
+// │Blocking│      │ T │      │Blocking│        │        │       │       │
+// └────┬───┘      │ a │      └────┬───┘        │        │       │       │
+//      │          │ s │           │            │        │     8 Sec     │
+//    ┌─┴─┐        │ k │         ┌─┴─┐          │        │       │       │
+//    │ T │        │   │         │ T │          │        │       │       │
+//    │ a │        │ 2 │         │ a │          │        │       │       │
+//    │ s │        └─┬─┘         │ s │          │        │       │       │
+//    │ k │          │           │ k │          │        │       │    10 Sec
+//    │   │        ┌─┴─┐         │   │          │        │       │       │
+//    │ 1 │        │ T │         │ 1 │          │        │       │       │
+//    └─┬─┘        │ a │         ├───┤        ┌─┴─┐      │       │       │
+//      │          │ s │         │┼┼┼│        │┼┼┼│      ▼       │       │
+//    ┌─┴─┐        │ k │         └───┴────────┴───┴─────────     │       │
 //    │ T │        │   │                                         │       │
 //    │ a │        │ 1 │                                         │       │
 //    │ s │        ├───┤                                         │       │
@@ -59,9 +73,15 @@
 //    └───┴────────────────────────────────────────────────────────────────
 //
 //
-// The diagram was modeled on the one in a blog in which the differences
-// between asynchronous processing and multithreading are explained in detail:
+// The diagram was inspired by the one in a blog:
 // https://blog.devgenius.io/multi-threading-vs-asynchronous-programming-what-is-the-difference-3ebfe1179a5
+// and extended based on Loris Cro's blog:
+// https://kristoff.it/blog/asynchrony-is-not-concurrency/
+//
+// The multi-threaded variant may also use non-blocking IO to further
+// increase performance of more complex workflows.
+// See: https://kristoff.it/blog/zig-new-async-io/
+//
 //
 // Our exercise is essentially about clarifying the approach in Zig and
 // therefore we try to keep it as simple as possible.

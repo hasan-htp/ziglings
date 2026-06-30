@@ -86,7 +86,7 @@ pub fn main() !void {
     }
 
     // Here we add up the results.
-    std.debug.print("PI ≈ {d:.8} (error = {e:.1})\n", .{ pi_plus - pi_minus, std.math.pi - (pi_plus - pi_minus) });
+    std.debug.print("PI = {d:.8} (error = {e:.1})\n", .{ pi_plus - pi_minus, std.math.pi - (pi_plus - pi_minus) });
 }
 
 fn thread_pi(pi: *f64, begin: u64, count: u64) !void {

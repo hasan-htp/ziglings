@@ -227,8 +227,8 @@ pub fn main(init: std.process.Init) !void {
 
     switch (mode) {
         .named => {
-            const n = only_n.?;
-            if (n == 0 or n > exercises.len - 1) {
+            const n = if (only_n) |n| if (n == 999) exercises.len else n else unreachable;
+            if (n == 0 or n > exercises.len) {
                 print("unknown exercise number: {}\n", .{n});
                 std.process.exit(1);
             }
